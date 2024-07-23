@@ -1,7 +1,7 @@
 package com.yoe.openapiexample.presentation;
 
-import com.openapi.gen.springboot.api.UserApiDelegate;
-import com.openapi.gen.springboot.dto.User;
+import com.yoe.openapiexample.presentation.UserApiDelegate;
+import com.yoe.openapiexample.presentation.views.User;
 import com.yoe.openapiexample.domain.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +21,6 @@ public class UsersApiDelegateImpl implements UserApiDelegate {
 
     private NativeWebRequest nativeWebRequest;
 
-    @Autowired
-    private UserService userService;
 
     @PostConstruct
     public void init() {
@@ -39,12 +37,12 @@ public class UsersApiDelegateImpl implements UserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<User> getUserByName(String username) {
+    public ResponseEntity<com.yoe.openapiexample.presentation.views.User> getUserByName(String username) {
         System.out.println("get user");
         User userNew = new User();
         userNew.email("email");
         userNew.firstName("first name");
-        userService.createUser();
+
         return new ResponseEntity<>(userNew, HttpStatus.OK);
 
     }
