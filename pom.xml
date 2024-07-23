@@ -30,6 +30,8 @@
 		<java.version>17</java.version>
 		<default.package>com.yoe.openapiexample.presentation</default.package>
 		<compiler-plugin.version>3.10.1</compiler-plugin.version>
+		<test.integration.pattern>**/*IntegrationTest*.java</test.integration.pattern>
+		<failsafe-plugin.version>2.22.2</failsafe-plugin.version>
 	</properties>
 	<dependencies>
 
@@ -104,29 +106,22 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>junit</groupId>
-					<artifactId>junit</artifactId>
-				</exclusion>
-			</exclusions>
+
 		</dependency>
+
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.8.2</version>
-			<scope>test</scope>
+			<version>5.10.3</version>
+
 		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.8.2</version>
-			<scope>test</scope>
-		</dependency>
+
+
 	</dependencies>
 
 	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -155,9 +150,6 @@
 							<inputSpec>${project.basedir}/src/main/resources/openapi/openapi.yaml</inputSpec>
 							<generatorName>spring</generatorName>
 
-							<generateApiTests>false</generateApiTests>
-							<generateModelTests>false</generateModelTests>
-							<generateApiDocumentation>false</generateApiDocumentation>
 							<apiPackage>${default.package}</apiPackage>
 							<modelPackage>${default.package}.views</modelPackage>
 							<invokerPackage>${default.package}</invokerPackage>
@@ -192,6 +184,25 @@
 
 					</annotationProcessorPaths>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${failsafe-plugin.version}</version>
+				<configuration>
+					<includes>
+						<!-- Run only integration tests -->
+						<include>${test.integration.pattern}</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
